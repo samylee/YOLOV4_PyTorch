@@ -21,7 +21,7 @@ def postprocess(outputs, B, num_classes, anchors, masks, conf_thresh, net_size, 
         x = x.view(bs, B, num_classes+5, gs, gs).permute(0, 1, 3, 4, 2).contiguous()
         grid = make_grid(gs, gs)
         anchor_grid = anchors[masks[i]].view(1, -1, 1, 1, 2)
-        x[..., 0:2] = (x[..., 0:2].sigmoid() * scale_x_y - 0.5 * (scale_x_y - 1) + grid) / gs
+        x[..., 0:2] = (x[..., 0:2].sigmoid() * scale_x_y[i] - 0.5 * (scale_x_y[i] - 1) + grid) / gs
         x[..., 2:4] = torch.exp(x[..., 2:4]) * anchor_grid / net_size
         x[..., 4:] = x[..., 4:].sigmoid()
         x = x.view(bs, -1, num_classes+5)
@@ -86,7 +86,7 @@ if __name__ == '__main__':
 
     thresh = 0.25
     iou_thresh = 0.45
-    scale_x_y = 1.05
+    scale_x_y = [1.2, 1.1, 1.05]
 
     # coco
     with open('assets/coco.names', 'r') as f:
