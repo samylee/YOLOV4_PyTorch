@@ -1,4 +1,4 @@
-# YOLOV4_PyTorch_Legend
+# YOLOV4_PyTorch
 yolov4's classic model to pytorch
 
 ## Demo
